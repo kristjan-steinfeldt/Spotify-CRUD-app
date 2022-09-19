@@ -29,6 +29,15 @@
         </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
         <button class="btn btn-default" id="obtain-playlists">Send a GET Request for playlists</button>
+        <div id="playlists">
+          <div id="playlist">
+
+          </div>
+
+
+
+
+        </div>
       </div>
     </div>
 
@@ -123,22 +132,28 @@
               $('#loggedin').hide();
           }
           document.getElementById('obtain-playlists').addEventListener('click', function() {
+            access_token: access_token,
             $.ajax({
               url: 'https://api.spotify.com/v1/me/playlists',
               type: 'GET',
-              dataType: 'application/json',
-              limit: 1,
-              data: {
-                'refresh_token': refresh_token
+              headers: {
+                'Authorization' : 'Bearer ' + access_token
+              },
+              success: function(data) {
+                  const myObj = JSON.parse(this.data);
+                  let text = "<table border='1'>"
+                  for (let x in myObj) {
+                    text += "<tr><td>" + myObj[x].name + "</td></tr>";
+                  }
+                  text += "</table>"
+                  document.getElementById("playlist").innerHTML = text;
+
+
+
+                console.log(data);
               }
-            }).done(function(data) {
-              access_token = data.access_token;
-              oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-              });
             });
-          }, false);
+            })
 
           document.getElementById('obtain-new-token').addEventListener('click', function() {
             $.ajax({
