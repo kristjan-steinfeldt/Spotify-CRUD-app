@@ -140,10 +140,11 @@
                 'Authorization' : 'Bearer ' + access_token
               },
               success: function(data) {
-                  const myObj = JSON.parse(this.data);
+                  console.log(data);
+                  const myObj = data;
                   let text = "<table border='1'>"
-                  for (let x in myObj) {
-                    text += "<tr><td>" + myObj[x].name + "</td></tr>";
+                  for (let x in myObj.items) {
+                    text += "<tr><td>"+ myObj.items[x].name + "</td></tr>";
                   }
                   text += "</table>"
                   document.getElementById("playlist").innerHTML = text;
