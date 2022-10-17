@@ -144,17 +144,28 @@
                   const myObj = data;
                   let text = "<table border='1'>"
                   for (let x in myObj.items) {
-                    text += "<tr><td>"+ myObj.items[x].name + "</td></tr>";
+                    text += "<tr><td>"+ myObj.items[x].name + "</td><td><button onclick=\'update("+myObj.items[x].id+")\'>Update</button></td><td><button id='Delete_"+x+"'>Delete</button></td></tr>";
+
                   }
                   text += "</table>"
-                  document.getElementById("playlist").innerHTML = text;
+                  document.getElementById("playlist").innerHTML = text
 
-
-
-                console.log(data);
               }
             });
             })
+          function  update(id) {
+            access_token: access_token
+                    $.ajax({
+                      url: 'https://api.spotify.com/v1/me/playlists/'+id,
+                      type: 'GET',
+                      headers: {
+                        'Authorization': 'Bearer ' + access_token
+                      },
+                      success: function (data) {
+                      }
+                    });
+          }
+
 
           document.getElementById('obtain-new-token').addEventListener('click', function() {
             $.ajax({
