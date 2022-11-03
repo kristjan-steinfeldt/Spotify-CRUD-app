@@ -178,17 +178,33 @@
             });
             }
           $('#playlist').on('click', 'button.delete', function() {
-            delete_playlist();
+            var playlistButtonID = $(this).attr('id');
+            delete_playlist(playlistButtonID);
           });
 
-          function delete_playlist(id) {
-            for (let x in data.items) {
-              $('#' + x).attr('id')
-            }
 
-            console.log(id);
+          function delete_playlist(buttonID) {
 
-          }
+            access_token: access_token,
+                    $.ajax({
+                      url: 'https://api.spotify.com/v1/me/playlists',
+                      type: 'GET',
+                      headers: {
+                        'Authorization' : 'Bearer ' + access_token
+                      },
+                      success: function(data) {
+                        const myObj = data;
+                    $.ajax({
+                      url: 'https://api.spotify.com/v1/playlists/'+myObj.items[buttonID].id +'/followers',
+                      type: 'DELETE',
+                      headers: {
+                        'Authorization' : 'Bearer ' + access_token
+                      },
+                      success: function() {
+                        alert('success')
+                      }})
+                      }})
+                    };
 
 
 
