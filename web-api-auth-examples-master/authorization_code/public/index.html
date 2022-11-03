@@ -181,8 +181,6 @@
             var playlistButtonID = $(this).attr('id');
             delete_playlist(playlistButtonID);
           });
-
-
           function delete_playlist(buttonID) {
 
             access_token: access_token,
@@ -202,6 +200,7 @@
                       },
                       success: function() {
                         alert('Successfully deleted')
+                        location.reload();
                       }})
                       }})
                     };
@@ -212,28 +211,35 @@
           });
           function update_playlist(buttonUpdateID) {
             // console.log(playlistUpdateID);
-            access_token: access_token
-                    $.ajax({
-                      url: 'https://api.spotify.com/v1/me/playlists/',
-                      type: 'GET',
-                      headers: {
-                        'Authorization': 'Bearer ' + access_token
-                      },
-                      success: function (data) {
-                        const myObj = data;
+            let updateName = prompt('New name for playlist');
+
+            if (updateName == null || updateName == "") {
+               alert("User cancelled the prompt.");
+            } else{
+              access_token: access_token
                       $.ajax({
-                      url: 'https://api.spotify.com/v1/playlists/'+myObj.items[buttonUpdateID].id,
-                      type: 'PUT',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + access_token
-                      },
-                      data: JSON.stringify( {name: "Updated Playlist Name"
-                      }),
-                      success: function() {
-                        alert('Playlist has been renamed')
-                      }})
-                      }})
+                        url: 'https://api.spotify.com/v1/me/playlists/',
+                        type: 'GET',
+                        headers: {
+                          'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function (data) {
+                          const myObj = data;
+                        $.ajax({
+                        url: 'https://api.spotify.com/v1/playlists/'+myObj.items[buttonUpdateID].id,
+                        type: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer ' + access_token
+                        },
+                        data: JSON.stringify( {name: updateName
+                        }),
+                        success: function() {
+                          alert('Playlist has been renamed')
+                          location.reload();
+                        }})
+                        }})
+             }
 
           }
 
@@ -253,7 +259,9 @@
                           'content-type': 'application/json',
                           'Authorization': 'Bearer ' + access_token
                         },
-
+                        success: function() {
+                          location.reload();
+                        }
                       })
           }
           });
