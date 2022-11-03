@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <title>Example of the Authorization Code flow with Spotify</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -131,7 +131,31 @@
               $('#login').show();
               $('#loggedin').hide();
           }
-          document.getElementById('obtain-playlists').addEventListener('click', function() {
+
+          const data = getData()
+          function getData() {
+            let data1;
+            access_token: access_token,
+            $.ajax({
+              url: 'https://api.spotify.com/v1/me/playlists/',
+              type: 'GET',
+              headers: {
+                'Authorization': 'Bearer ' + access_token
+              },
+              success: function (data) {
+                data1=data;
+              }
+            });
+            return data1;
+          }
+          document.onload =function() {
+            load();
+
+          };
+          document.getElementById('obtain-playlists').addEventListener('click', load())
+
+
+            function load() {
             access_token: access_token,
             $.ajax({
               url: 'https://api.spotify.com/v1/me/playlists',
@@ -144,7 +168,7 @@
                   const myObj = data;
                   let text = "<table border='1'>"
                   for (let x in myObj.items) {
-                    text += "<tr><td>"+ myObj.items[x].name + "</td><td><button onclick=\'update("+myObj.items[x].id+")\'>Update</button></td><td><button id='Delete_"+x+"'>Delete</button></td></tr>";
+                    text += "<tr><td>"+ myObj.items[x].name + "</td><td><button onclick=\'update("+myObj.items[x].id+")\'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
 
                   }
                   text += "</table>"
@@ -152,19 +176,20 @@
 
               }
             });
-            })
-          function  update(id) {
-            access_token: access_token
-                    $.ajax({
-                      url: 'https://api.spotify.com/v1/me/playlists/'+id,
-                      type: 'GET',
-                      headers: {
-                        'Authorization': 'Bearer ' + access_token
-                      },
-                      success: function (data) {
-                      }
-                    });
+            }
+          $('#playlist').on('click', 'button.delete', function() {
+            delete_playlist();
+          });
+
+          function delete_playlist(id) {
+            for (let x in data.items) {
+              $('#' + x).attr('id')
+            }
+
+            console.log(id);
+
           }
+
 
 
           document.getElementById('obtain-new-token').addEventListener('click', function() {
