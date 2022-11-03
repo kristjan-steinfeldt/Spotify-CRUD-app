@@ -168,7 +168,7 @@
                   const myObj = data;
                   let text = "<table border='1'>"
                   for (let x in myObj.items) {
-                    text += "<tr><td>"+ myObj.items[x].name + "</td><td><button onclick=\'update("+myObj.items[x].id+")\'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
+                    text += "<tr><td>"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
 
                   }
                   text += "</table>"
@@ -206,7 +206,36 @@
                       }})
                     };
 
+          $('#playlist').on('click', 'button.update', function() {
+            var playlistUpdateID = $(this).attr('id');
+            update_playlist(playlistUpdateID.substring(1)); //eemaldab nulli update nuppu id-st, et teha id loetavaks
+          });
+          function update_playlist(buttonUpdateID) {
+            // console.log(playlistUpdateID);
+            access_token: access_token
+                    $.ajax({
+                      url: 'https://api.spotify.com/v1/me/playlists/',
+                      type: 'GET',
+                      headers: {
+                        'Authorization': 'Bearer ' + access_token
+                      },
+                      success: function (data) {
+                        const myObj = data;
+                      $.ajax({
+                      url: 'https://api.spotify.com/v1/playlists/'+myObj.items[buttonUpdateID].id,
+                      type: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + access_token
+                      },
+                      data: JSON.stringify( {name: "Updated Playlist Name"
+                      }),
+                      success: function() {
+                        alert('Playlist has been renamed')
+                      }})
+                      }})
 
+          }
 
           document.getElementById('create-playlist').addEventListener('click', function() {
             let PlaylistName = prompt('Enter New Playlist Name')
