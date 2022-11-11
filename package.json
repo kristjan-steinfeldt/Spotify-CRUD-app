@@ -12,6 +12,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "cypress": "^10.10.0"
+    "cypress": "^10.10.0",
+    "nock": "^13.2.9"
   }
 }

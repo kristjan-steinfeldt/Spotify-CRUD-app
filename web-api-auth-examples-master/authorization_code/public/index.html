@@ -166,9 +166,9 @@
               success: function(data) {
                   console.log(data);
                   const myObj = data;
-                  let text = "<table border='1'>"
+                  let text = "<table id='tableOutput' border='1'>"
                   for (let x in myObj.items) {
-                    text += "<tr><td>"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
+                    text += "<tr><td id="+0+0+x+">"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
 
                   }
                   text += "</table>"
