@@ -11,8 +11,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Cypress.io
-        uses: cypress-io/github-action@v4.2.0
-        with: 
-          start: node app.js
-          working-directory: ./web-api-auth-examples-master/authorization_code         
-
+        run: |
+          cd web-api-auth-examples-master/authorization_code 
+          node app.js
