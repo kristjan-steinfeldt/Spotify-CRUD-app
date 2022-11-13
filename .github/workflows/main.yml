@@ -8,6 +8,8 @@ jobs:
         uses: actions/setup-node@v3.5.1
       - name: Checkout
         uses: actions/checkout@v2.5.0
+        with:
+          persist-credentials: false
       - name: Cypress.io
         uses: cypress-io/github-action@v4.2.0
         with: 
