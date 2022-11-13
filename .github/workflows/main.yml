@@ -4,6 +4,8 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
       - name: Checkout
         uses: actions/checkout@v2.5.0
       - name: Cypress.io
@@ -11,3 +13,4 @@ jobs:
         with: 
           start: node app.js
           working-directory: ./web-api-auth-examples-master/authorization_code         
+
