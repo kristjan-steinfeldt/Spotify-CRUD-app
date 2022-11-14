@@ -10,8 +10,9 @@ jobs:
         uses: actions/setup-node@v3.5.1
         with:
           start: npm install #dependencies
+          working-directory: ./web-api-auth-examples-master/authorization_code
+          run: node app.js         
       - name: Cypress.io
         uses: cypress-io/github-action@v4.2.0
         with:
-          start: node app.js
-          working-directory: ./web-api-auth-examples-master/authorization_code
+          start: npx cypress run
