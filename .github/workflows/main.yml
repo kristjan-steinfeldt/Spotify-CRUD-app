@@ -11,8 +11,9 @@ jobs:
         with:
           start: npm install #dependencies
           working-directory: ./web-api-auth-examples-master/authorization_code
-          run: node app.js         
+          run: node app.js
       - name: Cypress.io
         uses: cypress-io/github-action@v4.2.0
         with:
+          run: sleep 30s
           start: npx cypress run
