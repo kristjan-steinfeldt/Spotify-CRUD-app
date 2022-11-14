@@ -10,4 +10,4 @@ jobs:
         uses: cypress-io/github-action@v4.2.0
         with:
           start: node app.js
-          path: ./web-api-auth-examples-master/authorization_code
+          working-directory: ./web-api-auth-examples-master/authorization_code
