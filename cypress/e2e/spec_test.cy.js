@@ -2,7 +2,7 @@ describe('Landing on localhost', () => {
   it('passes', () => {
     Cypress.config();
 
-    cy.visit('http://localhost:8888/');
+    cy.visit('http://localhost:88888/');
     cy.get('a').click();
 
     //log into spotify
