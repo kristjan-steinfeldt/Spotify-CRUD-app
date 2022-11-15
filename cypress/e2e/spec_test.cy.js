@@ -1,7 +1,7 @@
 describe('Landing on localhost', () => {
   it('passes', () => {
     Cypress.config();
-
+    
     cy.visit('http://localhost:88888/');
     cy.get('a').click();
 
