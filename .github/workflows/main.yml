@@ -14,3 +14,6 @@ jobs:
         uses: cypress-io/github-action@v4.2.0
         with:
           start: node app.js
+        env:  
+          CYPRESS_spotify-password: ${{ secrets.SPOTIFY_PASSWORD }}
+          CYPRESS_spotify-username: ${{ secrets.SPOTIFY_USERNAME }}
