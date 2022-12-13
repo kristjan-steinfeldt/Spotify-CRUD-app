@@ -137,11 +137,8 @@
             let data1;
             access_token: access_token,
             $.ajax({
-              url: 'https://api.spotify.com/v1/me/playlists/',
+              url: 'http://192.168.21.23/playlists/',
               type: 'GET',
-              headers: {
-                'Authorization': 'Bearer ' + access_token
-              },
               success: function (data) {
                 data1=data;
               }
@@ -158,11 +155,8 @@
             function load() {
             access_token: access_token,
             $.ajax({
-              url: 'https://api.spotify.com/v1/me/playlists',
+              url: 'http://192.168.21.23/playlists/',
               type: 'GET',
-              headers: {
-                'Authorization' : 'Bearer ' + access_token
-              },
               success: function(data) {
                   console.log(data);
                   const myObj = data;
@@ -185,19 +179,13 @@
 
             access_token: access_token,
                     $.ajax({
-                      url: 'https://api.spotify.com/v1/me/playlists',
+                      url: 'http://192.168.21.23/playlists/',
                       type: 'GET',
-                      headers: {
-                        'Authorization' : 'Bearer ' + access_token
-                      },
                       success: function(data) {
                         const myObj = data;
                     $.ajax({
-                      url: 'https://api.spotify.com/v1/playlists/'+myObj.items[buttonID].id +'/followers',
+                      url: 'http://192.168.21.23/playlists/'+myObj.items[buttonID].id,
                       type: 'DELETE',
-                      headers: {
-                        'Authorization' : 'Bearer ' + access_token
-                      },
                       success: function() {
                         alert('Successfully deleted')
                         location.reload();
@@ -218,21 +206,14 @@
             } else{
               access_token: access_token
                       $.ajax({
-                        url: 'https://api.spotify.com/v1/me/playlists/',
+                        url: 'http://192.168.21.23/playlists/',
                         type: 'GET',
-                        headers: {
-                          'Authorization': 'Bearer ' + access_token
-                        },
                         success: function (data) {
                           const myObj = data;
                         $.ajax({
-                        url: 'https://api.spotify.com/v1/playlists/'+myObj.items[buttonUpdateID].id,
+                        url: 'http://192.168.21.23/playlists/',
                         type: 'PUT',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          'Authorization': 'Bearer ' + access_token
-                        },
-                        data: JSON.stringify( {name: updateName
+                        data: JSON.stringify( {name: updateName, id: myObj.items[buttonUpdateID].id
                         }),
                         success: function() {
                           alert('Playlist has been renamed')
@@ -252,13 +233,9 @@
               console.log(NewData)
               access_token: access_token,
                       $.ajax({
-                        url: 'https://api.spotify.com/v1/users/'+  document.getElementById('userid').innerText+'/playlists',
+                        url: 'http://192.168.21.23/playlists/',
                         type: 'POST',
                         data: JSON.stringify(NewData),
-                        headers: {
-                          'content-type': 'application/json',
-                          'Authorization': 'Bearer ' + access_token
-                        },
                         success: function() {
                           location.reload();
                         }
