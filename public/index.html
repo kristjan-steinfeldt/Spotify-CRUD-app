@@ -72,8 +72,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
-
-
+      var apiurl='http://192.168.23.135/playlists/';
+      /* 
+      Karl
+      var apiurl='http://192.168.23.135/playlists/';
+      kristjan
+      var apiurl='http://192.168.21.23/playlists/';
+      */
       (function() {
 
         /**
@@ -132,19 +137,7 @@
               $('#loggedin').hide();
           }
 
-          const data = getData()
-          function getData() {
-            let data1;
-            access_token: access_token,
-            $.ajax({
-              url: 'http://192.168.21.23/playlists/',
-              type: 'GET',
-              success: function (data) {
-                data1=data;
-              }
-            });
-            return data1;
-          }
+
           document.onload =function() {
             load();
 
@@ -155,7 +148,7 @@
             function load() {
             access_token: access_token,
             $.ajax({
-              url: 'http://192.168.21.23/playlists/',
+              url: apiurl,
               type: 'GET',
               success: function(data) {
                   console.log(data);
@@ -179,12 +172,12 @@
 
             access_token: access_token,
                     $.ajax({
-                      url: 'http://192.168.21.23/playlists/',
+                      url: apiurl,
                       type: 'GET',
                       success: function(data) {
                         const myObj = data;
                     $.ajax({
-                      url: 'http://192.168.21.23/playlists/'+myObj.items[buttonID].id,
+                      url: apiurl+myObj.items[buttonID].id,
                       type: 'DELETE',
                       success: function() {
                         alert('Successfully deleted')
@@ -206,12 +199,12 @@
             } else{
               access_token: access_token
                       $.ajax({
-                        url: 'http://192.168.21.23/playlists/',
+                        url: apiurl,
                         type: 'GET',
                         success: function (data) {
                           const myObj = data;
                         $.ajax({
-                        url: 'http://192.168.21.23/playlists/',
+                        url: apiurl,
                         type: 'PUT',
                         data: JSON.stringify( {name: updateName, id: myObj.items[buttonUpdateID].id
                         }),
@@ -233,7 +226,7 @@
               console.log(NewData)
               access_token: access_token,
                       $.ajax({
-                        url: 'http://192.168.21.23/playlists/',
+                        url: apiurl,
                         type: 'POST',
                         data: JSON.stringify(NewData),
                         success: function() {
