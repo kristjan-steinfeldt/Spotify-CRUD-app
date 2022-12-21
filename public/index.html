@@ -31,6 +31,7 @@
         <button class="btn btn-default" id="obtain-playlists">refresh the playlists</button>
         <div id="playlists">
           <div id="playlist">
+            
 
           </div>
 
@@ -71,16 +72,20 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    
     <script>
-      var apiurl='http://192.168.23.135/playlists/';
+      var apiurl='http://192.168.23.135:8000/playlists/';
       /* 
       Karl
       var apiurl='http://192.168.23.135/playlists/';
       kristjan
       var apiurl='http://192.168.21.23/playlists/';
       */
-      (function() {
+      
+      
 
+      (function() {
+        
         /**
          * Obtains parameters from the hash of the URL
          * @return Object
@@ -155,7 +160,7 @@
                   const myObj = data;
                   let text = "<table id='tableOutput' border='1'>"
                   for (let x in myObj.items) {
-                    text += "<tr><td id="+0+0+x+">"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
+                    text += "<tr id="+0+0+0+x+"><td id="+0+0+x+">"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
 
                   }
                   text += "</table>"
@@ -181,7 +186,8 @@
                       type: 'DELETE',
                       success: function() {
                         alert('Successfully deleted')
-                        location.reload();
+                        // location.reload();
+                        socketRequestDelete('DELETE', buttonID)
                       }})
                       }})
                     };
@@ -210,7 +216,7 @@
                         }),
                         success: function() {
                           alert('Playlist has been renamed')
-                          location.reload();
+                          socketRequestPut(updateName,'PUT', buttonUpdateID)
                         }})
                         }})
              }
@@ -223,14 +229,14 @@
                alert("User cancelled the prompt.");
             } else{
               let NewData= {name: PlaylistName, description: "New playlist description", public: true}
-              console.log(NewData)
+              // console.log(NewData)
               access_token: access_token,
                       $.ajax({
                         url: apiurl,
                         type: 'POST',
                         data: JSON.stringify(NewData),
                         success: function() {
-                          location.reload();
+                          socketRequestPost(PlaylistName,'POST')
                         }
                       })
           }
@@ -238,6 +244,7 @@
         }
       })();
     </script>
+    <script src="websocket.js"></script>
   </body>
 </html>
 
