@@ -10,3 +10,5 @@
 
 # mida reposse ei lükka
 cypress.env.json
+.env
+/node_modules

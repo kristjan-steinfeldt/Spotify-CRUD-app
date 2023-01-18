@@ -28,7 +28,7 @@
         <div id="oauth">
         </div>
         <button class="btn btn-default" id="create-playlist">Create a new playlist</button>
-        <button class="btn btn-default" id="obtain-playlists">refresh the playlists</button>
+        <button class="btn btn-default" id="obtain-playlists"><a href="http://192.168.21.23/playlists/logs.txt">See logs</a></button>
         <div id="playlists">
           <div id="playlist">
 
@@ -72,7 +72,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
-      var apiurl='http://192.168.23.135/playlists/';
+      var apiUrl='http://192.168.21.23/playlists/';
+      var uid;
       /* 
       Karl
       var apiurl='http://192.168.23.135/playlists/';
@@ -126,7 +127,7 @@
                 },
                 success: function(response) {
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-
+                  uid= response.id;
                   $('#login').hide();
                   $('#loggedin').show();
                 }
@@ -138,24 +139,23 @@
           }
 
 
-          document.onload =function() {
-            load();
 
-          };
           document.getElementById('obtain-playlists').addEventListener('click', load())
 
 
             function load() {
+              if (uid){
+                console.log(uid);
             access_token: access_token,
             $.ajax({
-              url: apiurl,
+              url: apiUrl+uid,
               type: 'GET',
               success: function(data) {
                   console.log(data);
-                  const myObj = data;
+                  const responseData = data;
                   let text = "<table id='tableOutput' border='1'>"
-                  for (let x in myObj.items) {
-                    text += "<tr><td id="+0+0+x+">"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
+                  for (let x in responseData.items) {
+                    text += "<tr><td id="+0+0+x+">"+ responseData.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
 
                   }
                   text += "</table>"
@@ -164,20 +164,23 @@
               }
             });
             }
+            else {
+          setTimeout(load, 300); // try again in 300 milliseconds
+           }
+          }
           $('#playlist').on('click', 'button.delete', function() {
             var playlistButtonID = $(this).attr('id');
             delete_playlist(playlistButtonID);
           });
           function delete_playlist(buttonID) {
-
             access_token: access_token,
                     $.ajax({
-                      url: apiurl,
+                      url: apiUrl+uid,
                       type: 'GET',
                       success: function(data) {
-                        const myObj = data;
+                        const responseData = data;
                     $.ajax({
-                      url: apiurl+myObj.items[buttonID].id,
+                      url: apiUrl+responseData.items[buttonID].id,
                       type: 'DELETE',
                       success: function() {
                         alert('Successfully deleted')
@@ -190,23 +193,21 @@
             var playlistUpdateID = $(this).attr('id');
             update_playlist(playlistUpdateID.substring(1)); //eemaldab nulli update nuppu id-st, et teha id loetavaks
           });
-          function update_playlist(buttonUpdateID) {
-            // console.log(playlistUpdateID);
+          function update_playlist_name(buttonUpdateID) {
             let updateName = prompt('New name for playlist');
-
             if (updateName == null || updateName == "") {
                alert("User cancelled the prompt.");
             } else{
               access_token: access_token
                       $.ajax({
-                        url: apiurl,
+                        url: apiUrl+uid,
                         type: 'GET',
                         success: function (data) {
-                          const myObj = data;
+                          const responseData = data;
                         $.ajax({
-                        url: apiurl,
+                        url: apiUrl,
                         type: 'PUT',
-                        data: JSON.stringify( {name: updateName, id: myObj.items[buttonUpdateID].id
+                        data: JSON.stringify( {name: updateName, id: responseData.items[buttonUpdateID].id
                         }),
                         success: function() {
                           alert('Playlist has been renamed')
@@ -222,11 +223,11 @@
             if (PlaylistName == null || PlaylistName == "") {
                alert("User cancelled the prompt.");
             } else{
-              let NewData= {name: PlaylistName, description: "New playlist description", public: true}
+              let NewData= {name: PlaylistName, description: "New playlist description", public: true, userid:uid}
               console.log(NewData)
               access_token: access_token,
                       $.ajax({
-                        url: apiurl,
+                        url: apiUrl,
                         type: 'POST',
                         data: JSON.stringify(NewData),
                         success: function() {
