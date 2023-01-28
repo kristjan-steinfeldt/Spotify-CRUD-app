@@ -73,14 +73,14 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     
-    <script>
-      var apiurl='http://192.168.23.135:8000/playlists/';
-      /* 
-      Karl
-      var apiurl='http://192.168.23.135/playlists/';
-      kristjan
+    <script type="module">
+      /*const NodeCache = require('node-cache');
+      const cache = new NodeCache();*/
+      /*var apiurl='http://192.168.23.135:8000/playlists/';*/
+      /*Karl*/
+      // var apiurl='http://192.168.23.135/playlists/';
+      /*kristjan*/
       var apiurl='http://192.168.21.23/playlists/';
-      */
       
       
 
@@ -149,15 +149,22 @@
           };
           document.getElementById('obtain-playlists').addEventListener('click', load())
 
-
+            //GET Operation on page load
             function load() {
+              const local_storage = JSON.parse(localStorage.getItem("Items"))
             access_token: access_token,
             $.ajax({
               url: apiurl,
+              data: JSON.parse(localStorage.getItem("Items")),
               type: 'GET',
               success: function(data) {
-                  console.log(data);
-                  const myObj = data;
+                  // console.log(data);
+
+                  //cachimine
+                  localStorage.setItem("Items", JSON.stringify(data))
+                  const myObj = JSON.parse(localStorage.getItem("Items"));
+                  // console.log(myObj);
+
                   let text = "<table id='tableOutput' border='1'>"
                   for (let x in myObj.items) {
                     text += "<tr id="+0+0+0+x+"><td id="+0+0+x+">"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
@@ -166,9 +173,22 @@
                   text += "</table>"
                   document.getElementById("playlist").innerHTML = text
 
+              },
+              error:function(){
+                const myObj = JSON.parse(localStorage.getItem("Items"));
+
+                let text = "<table id='tableOutput' border='1'>"
+                for (let x in myObj.items) {
+                  text += "<tr id="+0+0+0+x+"><td id="+0+0+x+">"+ myObj.items[x].name + "</td><td><button id="+0+x+" class='update'>Update</button></td><td><button id='"+x+"'  class='delete'>Delete</button></td></tr>";
+
+                }
+                text += "</table>"
+                document.getElementById("playlist").innerHTML = text
               }
             });
             }
+
+          //DELETE Operation
           $('#playlist').on('click', 'button.delete', function() {
             var playlistButtonID = $(this).attr('id');
             delete_playlist(playlistButtonID);
@@ -192,6 +212,7 @@
                       }})
                     };
 
+          //PUT Operation
           $('#playlist').on('click', 'button.update', function() {
             var playlistUpdateID = $(this).attr('id');
             update_playlist(playlistUpdateID.substring(1)); //eemaldab nulli update nuppu id-st, et teha id loetavaks
@@ -223,6 +244,7 @@
 
           }
 
+          //POST Operation
           document.getElementById('create-playlist').addEventListener('click', function() {
             let PlaylistName = prompt('Enter New Playlist Name')
             if (PlaylistName == null || PlaylistName == "") {

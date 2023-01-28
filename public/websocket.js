@@ -1,27 +1,3 @@
-// let form = document.querySelector('#playlist')
-// form.addEventListener('click', (e)=> {
-//     if (e.target.classList.contains('update')){
-//         e.preventDefault();
-//         let message = e.target.message.value
-//         chatSocket.send(JSON.stringify({
-//             'message':message
-//         }))
-//     }
-// })
-
-
-// let form = document.getElementById('form')
-// form.addEventListener('submit', (e)=>{
-//     e.preventDefault();
-//     let message = e.target.message.value
-//     chatSocket.send(JSON.stringify({
-//         'message':message
-//     }))
-//     form.reset()
-// })
-
-// console.log(url);
-
 let url = 'ws://192.168.23.135:8000/playlists/ws/socket-server/';
 const chatSocket = new WebSocket(url);
 
